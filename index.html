@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DiabetesRisk ◆ DApp — OpenGradient</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="root">
+
+    <header class="hdr">
+      <div>
+        <div class="hdr-title">DiabetesRisk ◆ DApp</div>
+        <div class="hdr-sub">Powered by OpenGradient On-Chain Inference</div>
+      </div>
+      <div class="hdr-right">
+        <div class="chain-badge"><span class="pulse"></span>OpenGradient Network</div>
+        <div class="model-id">model_012_diabetes-risk-classifier.onnx</div>
+      </div>
+    </header>
+
+    <!-- Model Config -->
+    <section class="card">
+      <div class="sec-label">Model &amp; Call Config</div>
+      <div class="cid-block">
+        <span class="cid-key">model_cid &nbsp;&nbsp;&nbsp;</span>= <span class="amber">'yfba4xoW_-qDtoSq6qt8ghR2w0lDMNGSjo-Dohv0TFc'</span><br>
+        <span class="cid-key">input_key &nbsp;&nbsp;</span>= <span class="teal">"diab_feat"</span>  → float[1, 5]<br>
+        <span class="cid-key">framework &nbsp;&nbsp;</span>= <span class="purple">ONNX</span>
+      </div>
+
+      <div class="sec-label">
+        Feature Vector
+        <span class="sec-note">diab_feat[0] — 5 normalised values (0.0 – 4.0)</span>
+      </div>
+
+      <div class="feat-grid">
+        <div class="field-wrap">
+          <label class="field-label">feat[0] — Glucose</label>
+          <div class="field-row">
+            <input type="range" min="0" max="4" step="0.1" value="2.5" id="f0" oninput="update()" />
+            <span class="field-val" id="f0v">2.5</span>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">feat[1] — BMI</label>
+          <div class="field-row">
+            <input type="range" min="0" max="4" step="0.1" value="2.0" id="f1" oninput="update()" />
+            <span class="field-val" id="f1v">2.0</span>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">feat[2] — Age</label>
+          <div class="field-row">
+            <input type="range" min="0" max="4" step="0.1" value="1.5" id="f2" oninput="update()" />
+            <span class="field-val" id="f2v">1.5</span>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">feat[3] — Insulin</label>
+          <div class="field-row">
+            <input type="range" min="0" max="4" step="0.1" value="1.5" id="f3" oninput="update()" />
+            <span class="field-val" id="f3v">1.5</span>
+          </div>
+        </div>
+        <div class="field-wrap full-width">
+          <label class="field-label">feat[4] — Pedigree</label>
+          <div class="field-row">
+            <input type="range" min="0" max="4" step="0.1" value="2.0" id="f4" oninput="update()" />
+            <span class="field-val" id="f4v">2.0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SDK Preview + Mode + Button -->
+    <section class="card">
+      <div class="sec-label">Live SDK Call Preview</div>
+      <div class="payload-box" id="payloadBox"></div>
+
+      <div class="sec-label" style="margin-top:1rem;">Inference Mode</div>
+      <div class="radio-group">
+        <div class="radio-btn active" onclick="setMode('VANILLA',this)">VANILLA</div>
+        <div class="radio-btn" onclick="setMode('TEE',this)">TEE</div>
+        <div class="radio-btn" onclick="setMode('ZKML',this)">ZKML</div>
+      </div>
+
+      <button class="infer-btn" id="btn" onclick="runInference()">
+        <span id="bicon">◆</span>
+        <span id="btxt">Run On-Chain Inference</span>
+      </button>
+    </section>
+
+    <!-- Transaction Log -->
+    <section>
+      <div class="sec-label">Transaction Log</div>
+      <div class="tx-log" id="txLog">
+        <div class="tx-line"><span class="tx-t">[ready]</span><span class="tx-m">&nbsp;OpenGradient network connected</span></div>
+        <div class="tx-line"><span class="tx-t">[model]</span><span class="tx-m">&nbsp;CID loaded&nbsp;</span><span class="tx-h">yfba4xoW_-qDtoSq6qt8gh…</span></div>
+      </div>
+    </section>
+
+    <!-- Result Card -->
+    <section class="result-card" id="resultCard">
+      <div class="sec-label">Inference Result</div>
+      <div class="risk-hdr">
+        <div class="risk-icon" id="rIcon"></div>
+        <div>
+          <div class="risk-label" id="rLabel">—</div>
+          <div class="risk-sub" id="rSub">—</div>
+        </div>
+        <div class="risk-pct" id="rPct">—</div>
+      </div>
+      <div class="bar-wrap"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+      <div class="feat-chips" id="chipGrid"></div>
+      <div class="output-raw" id="rawOut"></div>
+      <div class="on-chain-row">
+        <span class="chain-pill" id="modePill">VANILLA</span>
+        <span class="proof-hash" id="txHashEl"></span>
+        <a class="explorer-link" href="https://explorer.opengradient.ai" target="_blank" rel="noopener">View on Explorer ↗</a>
+      </div>
+    </section>
+
+    <footer class="disclaimer">
+      Uses the exact inference call:
+      <code>og.infer(model_cid='yfba4xoW_…', model_input={"diab_feat": [[f0,f1,f2,f3,f4]]}, inference_mode=og.InferenceMode.VANILLA)</code>.
+      Input tensor shape is <strong>[1, 5]</strong> — one sample, five normalised features.
+      Connect a real wallet &amp; fund with testnet OPG tokens from
+      <a href="https://faucet.opengradient.ai" target="_blank" rel="noopener">faucet.opengradient.ai</a>
+      to go live. Not medical advice.
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

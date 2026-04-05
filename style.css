@@ -1,0 +1,446 @@
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ────────────────────────────────────────────── */
+:root {
+  --og-teal:        #1D9E75;
+  --og-teal-light:  #E1F5EE;
+  --og-teal-dark:   #085041;
+  --og-amber:       #EF9F27;
+  --og-red:         #E24B4A;
+  --og-red-light:   #FCEBEB;
+  --og-red-dark:    #A32D2D;
+  --og-amber-light: #FAEEDA;
+  --og-amber-dark:  #854F0B;
+  --og-green:       #639922;
+  --og-green-light: #EAF3DE;
+  --og-green-dark:  #27500A;
+  --og-gray:        #2C2C2A;
+  --og-purple:      #7F77DD;
+
+  --bg:          #ffffff;
+  --bg-2:        #f5f5f3;
+  --text:        #1a1a18;
+  --text-2:      #6b6b66;
+  --text-3:      #9e9e98;
+  --border:      rgba(0,0,0,0.12);
+  --radius-md:   8px;
+  --radius-lg:   12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #1a1a18;
+    --bg-2:   #242422;
+    --text:   #f0efea;
+    --text-2: #9e9e98;
+    --text-3: #6b6b66;
+    --border: rgba(255,255,255,0.1);
+  }
+}
+
+/* ── Base ──────────────────────────────────────────────── */
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Layout ────────────────────────────────────────────── */
+.root {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+.hdr {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: .5rem;
+}
+
+.hdr-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.hdr-sub {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-top: 2px;
+}
+
+.hdr-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* ── Chain badge ───────────────────────────────────────── */
+.chain-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--og-teal-light);
+  color: var(--og-teal-dark);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.pulse {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--og-teal);
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(.8); }
+}
+
+.model-id {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+}
+
+/* ── Cards ─────────────────────────────────────────────── */
+.card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+
+/* ── Section labels ────────────────────────────────────── */
+.sec-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin-bottom: 10px;
+}
+
+.sec-note {
+  font-size: 11px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-3);
+  margin-left: 6px;
+}
+
+/* ── CID block ─────────────────────────────────────────── */
+.cid-block {
+  background: var(--bg-2);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  line-height: 1.9;
+  margin-bottom: 1.25rem;
+  word-break: break-all;
+  color: var(--text-2);
+}
+
+.cid-key { color: var(--text-3); }
+.amber   { color: var(--og-amber); }
+.teal    { color: var(--og-teal); }
+.purple  { color: var(--og-purple); }
+
+/* ── Feature grid ──────────────────────────────────────── */
+.feat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field-wrap { display: flex; flex-direction: column; gap: 5px; }
+.full-width  { grid-column: 1 / -1; }
+
+.field-label {
+  font-size: 12px;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.field-row input[type=range] { flex: 1; cursor: pointer; accent-color: var(--og-teal); }
+
+.field-val {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 34px;
+  text-align: right;
+}
+
+/* ── Payload box ───────────────────────────────────────── */
+.payload-box {
+  background: var(--bg-2);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.9;
+}
+
+.py-kw  { color: var(--og-purple); }
+.py-str { color: var(--og-amber); }
+.py-num { color: var(--og-teal); }
+.py-fn  { color: var(--text); font-weight: 500; }
+
+/* ── Inference mode ────────────────────────────────────── */
+.radio-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+.radio-btn {
+  flex: 1;
+  padding: 8px 0;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-2);
+  background: var(--bg-2);
+  transition: all .15s;
+  user-select: none;
+}
+
+.radio-btn.active {
+  background: var(--og-teal-light);
+  color: var(--og-teal-dark);
+  border-color: var(--og-teal);
+}
+
+/* ── Infer button ──────────────────────────────────────── */
+.infer-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--og-gray);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: .02em;
+  transition: background .2s, transform .1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.infer-btn:hover   { background: var(--og-teal-dark); }
+.infer-btn:active  { transform: scale(.98); }
+.infer-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ── Transaction log ───────────────────────────────────── */
+.tx-log {
+  background: var(--bg-2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--text-2);
+  min-height: 64px;
+  max-height: 160px;
+  overflow-y: auto;
+  line-height: 1.9;
+}
+
+.tx-line { display: flex; align-items: flex-start; gap: 6px; }
+.tx-t    { color: var(--og-teal); flex-shrink: 0; }
+.tx-m    { color: var(--text); }
+.tx-h    { color: var(--og-amber); }
+
+/* ── Result card ───────────────────────────────────────── */
+.result-card {
+  background: var(--bg);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  display: none;
+}
+
+.result-card.show { display: block; }
+
+.risk-hdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.risk-icon {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.risk-label  { font-size: 18px; font-weight: 700; letter-spacing: -.3px; }
+.risk-sub    { font-size: 12px; color: var(--text-2); margin-top: 2px; }
+.risk-pct    { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-2); margin-left: auto; }
+
+.bar-wrap {
+  height: 8px;
+  background: var(--bg-2);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width .7s ease;
+}
+
+/* ── Feature chips ─────────────────────────────────────── */
+.feat-chips {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.chip {
+  background: var(--bg-2);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.chip-name { font-size: 10px; color: var(--text-2); margin-bottom: 2px; }
+.chip-val  { font-family: 'IBM Plex Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+
+/* ── Raw output ────────────────────────────────────────── */
+.output-raw {
+  background: var(--bg-2);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+/* ── On-chain row ──────────────────────────────────────── */
+.on-chain-row {
+  border-top: 0.5px solid var(--border);
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chain-pill {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--og-teal-light);
+  color: var(--og-teal-dark);
+}
+
+.proof-hash {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--text-3);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.explorer-link {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--og-teal);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.explorer-link:hover { text-decoration: underline; }
+
+/* ── Spinner ───────────────────────────────────────────── */
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Disclaimer ────────────────────────────────────────── */
+.disclaimer {
+  font-size: 11.5px;
+  color: var(--text-3);
+  line-height: 1.7;
+  border-top: 0.5px solid var(--border);
+  padding-top: 14px;
+}
+
+.disclaimer code {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  background: var(--bg-2);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+.disclaimer a {
+  color: var(--og-teal);
+  text-decoration: none;
+}
+
+.disclaimer a:hover { text-decoration: underline; }
+
+/* ── Responsive ────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .feat-grid     { grid-template-columns: 1fr; }
+  .full-width    { grid-column: unset; }
+  .feat-chips    { grid-template-columns: repeat(3, 1fr); }
+  .hdr           { flex-direction: column; }
+  .hdr-right     { align-items: flex-start; }
+}
